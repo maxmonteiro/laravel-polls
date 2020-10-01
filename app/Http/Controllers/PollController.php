@@ -26,7 +26,15 @@ class PollController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $poll = new Poll;
+        $poll->poll_description = $request->input('poll_description');
+
+        if ($poll->save()) {
+            $data = array(
+                'poll_id' => $poll->poll_id
+            );
+            return $data;
+        }
     }
 
     /**
