@@ -11,10 +11,10 @@ Route::get('/polls', 'PollController@index');
 Route::get('/poll/{id}', 'PollController@show');
 Route::get('/poll/{id}/stats', 'PollController@pollStatus');
 Route::post('/poll', 'PollController@store');
+Route::post('/poll/{pollId}/vote', 'VoteController@store');
 Route::delete('/poll/{id}', 'PollController@destroy');
 
 // Votes rotes
 Route::get('/votes', 'VoteController@index');
 Route::get('/vote/{id}', 'VoteController@show');
-Route::post('/poll/{pollId}/vote', 'VoteController@store');
 Route::delete('/vote/{id}', 'VoteController@destroy');
