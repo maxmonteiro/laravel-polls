@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Option;
 use App\Vote;
 use Illuminate\Http\Request;
 
@@ -27,10 +28,8 @@ class VoteController extends Controller
     public function store(Request $request)
     {
         $option_id = $request->input('option_id');
-        $vote = Vote::where('option_id', $option_id)->findOrFail();
-        if ($vote->isEmpty()) {
-            $vote = new Vote;
-        }
+        Option::findOrFail($option_id);
+        $vote = new Vote;
         $vote->option_id = $option_id;
 
         if($vote->save()) {
@@ -59,9 +58,10 @@ class VoteController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $option_id = $request->input('option_id');
+        Option::findOrFail($option_id);
         $vote = Vote::findOrFail($id);
-        $vote->option_id = $request->input('option_id');
-        $vote->qty = $request->input('qty');
+        $vote->option_id = $option_id;
 
         if($vote->save()) {
             return $vote;
