@@ -55,12 +55,17 @@ class PollController extends Controller
     public function show($id)
     {
         $poll = Poll::findOrFail($id);
-        $poll->options;
+        //$poll->options;
 
         $poll->views += 1;
         $poll->save();
 
-        return $poll;
+        $data = array([
+            'poll_id' => $poll->poll_id,
+            'poll_description' => $poll->poll_description,
+            'options' => $poll->options
+        ]);
+        return current($data);
     }
 
     /**
@@ -89,6 +94,12 @@ class PollController extends Controller
         return $poll;
     }
 
+    /**
+     * Display the poll status
+     *
+     * @param [int] $id
+     * @return void
+     */
     public function pollStatus($id) {
         $poll = Poll::findOrFail($id);
         $options = $poll->options;

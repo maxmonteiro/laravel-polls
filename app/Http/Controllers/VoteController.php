@@ -20,7 +20,7 @@ class VoteController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a vote.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
