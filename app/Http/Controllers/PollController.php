@@ -72,6 +72,9 @@ class PollController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $poll = Poll::findOrFail($id);
+        $poll->delete();
+
+        return $poll;
     }
 }
