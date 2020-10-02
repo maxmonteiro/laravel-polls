@@ -16,7 +16,7 @@ Vue.use(VueRouter)
 const routes = [
     {
         path: '/',
-        component: require('./components/ExampleComponent.vue').default
+        component: require('./components/PollsComponent.vue').default
     }
 ]
 
