@@ -11,4 +11,9 @@ class Option extends Model
     protected $fillable = [
         'option_description', 'poll_id',
     ];
+
+    public function poll()
+    {
+        return $this->belongsTo(Poll::class, 'option_id');
+    }
 }
