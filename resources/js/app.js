@@ -17,11 +17,14 @@ const routes = [
     {
         path: '/',
         component: require('./components/PollsComponent.vue').default
+    },
+    {
+        path: '/poll/add',
+        component: require('./components/AddPollComponent.vue').default
     }
 ]
 
 const router = new VueRouter({
-    mode: 'history',
     routes
 })
 

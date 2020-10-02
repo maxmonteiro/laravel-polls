@@ -1,3 +1,10 @@
 body {
     padding-top: 5rem;
 }
+form label {
+    font-weight: bold;
+}
+span.close {
+    cursor: pointer;
+    color: #e74c3c;
+}

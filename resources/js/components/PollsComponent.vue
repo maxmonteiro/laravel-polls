@@ -10,7 +10,7 @@
                 </li>
             </ul>
         </div>
-        <button class="btn btn-primary mt-2">Nova Enquete</button>
+        <button class="btn btn-primary mt-2" @click.prevent="newPoll">Nova Enquete</button>
     </div>
 </template>
 
@@ -32,6 +32,9 @@ export default {
             }).catch((err) => {
                 console.log(err)
             });
+        },
+        newPoll() {
+            this.$router.push({ path: '/poll/add' })
         }
     }
 }
