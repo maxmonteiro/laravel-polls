@@ -1942,15 +1942,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      form: {}
+      form: {
+        poll_description: ''
+      },
+      new_option: '',
+      options: [//'alternativa A'
+      ]
     };
   },
   mounted: function mounted() {},
   methods: {
-    createPoll: function createPoll() {}
+    addOption: function addOption() {
+      this.options.push(this.new_option);
+      this.new_option = '';
+    },
+    removeOption: function removeOption(obj) {
+      this.options.splice(this.options.indexOf(obj), 1);
+    },
+    createPoll: function createPoll() {
+      var _this = this;
+
+      if (this.options.length < 2) {
+        alert('Informe pelo menos 2 alternativas!');
+      } else {
+        var new_poll = {
+          'poll_description': this.form.poll_description,
+          'options': this.options
+        };
+        axios.post('poll', new_poll).then(function (_ref) {
+          var data = _ref.data;
+          console.log('adicionado.', data);
+
+          _this.$router.push({
+            path: '/'
+          });
+        })["catch"](function (err) {
+          console.log(err);
+        });
+      }
+    }
   }
 });
 
@@ -38290,68 +38327,137 @@ var render = function() {
   return _c("div", [
     _c("h2", [_vm._v("Nova Enquete")]),
     _vm._v(" "),
-    _c("form", { staticClass: "mt-4", on: { submit: _vm.createPoll } }, [
-      _vm._m(0),
-      _vm._v(" "),
-      _vm._m(1),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "form-footer mt-4 text-right" },
-        [
-          _c(
-            "router-link",
-            { staticClass: "btn btn-default", attrs: { to: "/" } },
-            [_vm._v("Voltar")]
-          ),
+    _c(
+      "form",
+      {
+        staticClass: "mt-4 col-lg-8",
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.createPoll($event)
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "" } }, [_vm._v("Descrição")]),
           _vm._v(" "),
-          _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Incluir")])
-        ],
-        1
-      )
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "" } }, [_vm._v("Descrição")]),
-      _vm._v(" "),
-      _c("textarea", { staticClass: "form-control", attrs: { type: "text" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "" } }, [_vm._v("Alternativas")]),
-      _vm._v(" "),
-      _c("ul", { staticClass: "list-group" }, [
-        _c("li", { staticClass: "list-group-item d-flex" }, [
-          _c("input", {
+          _c("textarea", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.form.poll_description,
+                expression: "form.poll_description"
+              }
+            ],
             staticClass: "form-control",
-            attrs: { type: "text", id: "inputOption" }
-          }),
-          _vm._v(" "),
-          _c("span", { staticClass: "input-span-add" }, [
-            _c("i", { staticClass: "fa fa-plus" })
-          ])
+            attrs: { type: "text", required: "" },
+            domProps: { value: _vm.form.poll_description },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.form, "poll_description", $event.target.value)
+              }
+            }
+          })
         ]),
         _vm._v(" "),
-        _c("li", { staticClass: "list-group-item" }, [
-          _vm._v("\n                    Alternativa A\n                    "),
-          _c("span", { staticClass: "float-right close" }, [
-            _c("i", { staticClass: "fa fa-close" })
-          ])
-        ])
-      ])
-    ])
-  }
-]
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "" } }, [_vm._v("Alternativas")]),
+          _vm._v(" "),
+          _c(
+            "ul",
+            { staticClass: "list-group" },
+            [
+              _c("li", { staticClass: "list-group-item d-flex" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.new_option,
+                      expression: "new_option"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "text",
+                    id: "inputOption",
+                    placeholder: "descrição da alternativa"
+                  },
+                  domProps: { value: _vm.new_option },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.new_option = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("span", { staticClass: "input-span-add" }, [
+                  _c("i", {
+                    staticClass: "fa fa-plus",
+                    on: { click: _vm.addOption }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._l(_vm.options, function(option, index) {
+                return _c(
+                  "li",
+                  { key: index, staticClass: "list-group-item" },
+                  [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(option) +
+                        "\n                    "
+                    ),
+                    _c(
+                      "span",
+                      {
+                        staticClass: "float-right close",
+                        on: {
+                          click: function($event) {
+                            return _vm.removeOption(option)
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "fa fa-close" })]
+                    )
+                  ]
+                )
+              })
+            ],
+            2
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "form-footer mt-4 text-right" },
+          [
+            _c(
+              "router-link",
+              { staticClass: "btn btn-default", attrs: { to: "/" } },
+              [_vm._v("Voltar")]
+            ),
+            _vm._v(" "),
+            _c("button", { staticClass: "btn btn-primary" }, [
+              _vm._v("Incluir")
+            ])
+          ],
+          1
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
