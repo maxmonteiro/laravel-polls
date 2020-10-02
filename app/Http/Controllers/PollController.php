@@ -55,8 +55,6 @@ class PollController extends Controller
     public function show($id)
     {
         $poll = Poll::findOrFail($id);
-        //$poll->options;
-
         $poll->views += 1;
         $poll->save();
 

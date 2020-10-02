@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Option;
+use App\Poll;
 use App\Vote;
 use Illuminate\Http\Request;
 
@@ -25,8 +26,9 @@ class VoteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
+        Poll::findOrFail($id);
         $option_id = $request->input('option_id');
         Option::findOrFail($option_id);
         $vote = new Vote;
