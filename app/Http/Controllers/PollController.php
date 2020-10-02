@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Poll;
 use App\Option;
+use App\Vote;
 use Illuminate\Http\Request;
 
 class PollController extends Controller
@@ -86,5 +87,26 @@ class PollController extends Controller
         $poll->delete();
 
         return $poll;
+    }
+
+    public function pollStatus($id) {
+        $poll = Poll::findOrFail($id);
+        $options = $poll->options;
+        $arr_votes = array();
+
+        foreach ($options as $value) {
+            $qty = count($value->votes);
+            array_push($arr_votes, [
+                'option_id' => $value->option_id,
+                'qty' => $qty
+            ]);
+        }
+
+        $data = array(
+            'views' => $poll->views,
+            'votes' => $arr_votes
+        );
+
+        return $data;
     }
 }

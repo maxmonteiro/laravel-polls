@@ -9,6 +9,7 @@ Route::delete('/option/{id}', 'OptionController@destroy');
 // Poll routes
 Route::get('/polls', 'PollController@index');
 Route::get('/poll/{id}', 'PollController@show');
+Route::get('/poll/{id}/stats', 'PollController@pollStatus');
 Route::post('/poll', 'PollController@store');
 Route::delete('/poll/{id}', 'PollController@destroy');
 
