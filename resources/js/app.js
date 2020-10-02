@@ -21,6 +21,11 @@ const routes = [
     {
         path: '/poll/add',
         component: require('./components/AddPollComponent.vue').default
+    },
+    {
+        path: '/poll/vote/:id',
+        name: 'vote-poll',
+        component: require('./components/VotePollComponent.vue').default
     }
 ]
 

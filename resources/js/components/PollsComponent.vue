@@ -2,12 +2,14 @@
     <div>
         <h2>Enquetes</h2>
         <div class="list-scroll col-lg-8">
-            <ul class="list-group" v-for="poll in polls" :key="poll.poll_id">
-                <li class="list-group-item">
-                    <span class="text-right">#{{ poll.poll_id }}</span>
-                    <p>{{ poll.poll_description }}</p>
-                    <span class="span-link">Ver status</span>
-                </li>
+            <ul class="list-group">
+                <router-link v-for="poll in polls" :key="poll.poll_id" :to="'/poll/vote/' + poll.poll_id">
+                     <li class="list-group-item">
+                        <span class="text-right">#{{ poll.poll_id }}</span>
+                        <p>{{ poll.poll_description }}</p>
+                        <span class="span-link">Ver status</span>
+                    </li>
+                </router-link>
             </ul>
         </div>
         <button class="btn btn-primary mt-2" @click.prevent="newPoll">Nova Enquete</button>
@@ -35,6 +37,14 @@ export default {
         },
         newPoll() {
             this.$router.push({ path: '/poll/add' })
+        },
+        openPoll(elem) {
+            this.$router.push({
+                name: 'vote-poll',
+                params: {
+                    id: elem.id
+                }
+            })
         }
     }
 }
@@ -51,6 +61,9 @@ export default {
 }
 .list-group-item:hover {
     background-color: #eee;
+}
+.list-group a {
+    text-decoration: none;
 }
 .span-link {
     display: none;
