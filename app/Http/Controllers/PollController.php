@@ -60,12 +60,12 @@ class PollController extends Controller
         $poll->views += 1;
         $poll->save();
 
-        $data = array([
+        $data = array(
             'poll_id' => $poll->poll_id,
             'poll_description' => $poll->poll_description,
             'options' => $poll->options
-        ]);
-        return current($data);
+        );
+        return $data;
     }
 
     /**
