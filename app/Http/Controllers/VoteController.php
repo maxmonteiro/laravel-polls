@@ -26,9 +26,12 @@ class VoteController extends Controller
      */
     public function store(Request $request)
     {
-        $vote = new Vote;
-        $vote->option_id = $request->input('option_id');
-        $vote->qty = $request->input('qty');
+        $option_id = $request->input('option_id');
+        $vote = Vote::where('option_id', $option_id)->findOrFail();
+        if ($vote->isEmpty()) {
+            $vote = new Vote;
+        }
+        $vote->option_id = $option_id;
 
         if($vote->save()) {
             return $vote;

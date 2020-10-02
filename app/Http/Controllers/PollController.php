@@ -34,7 +34,7 @@ class PollController extends Controller
         $arr_options = array();
         foreach ($options as $value) {
             array_push($arr_options, ['option_description' => $value]);
-        };
+        }
 
         if ($poll->save()) {
             $poll->options()->createMany($arr_options);
