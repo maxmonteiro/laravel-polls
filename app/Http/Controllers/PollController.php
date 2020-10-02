@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Poll;
+use App\Option;
 use Illuminate\Http\Request;
 
 class PollController extends Controller
@@ -28,8 +29,15 @@ class PollController extends Controller
     {
         $poll = new Poll;
         $poll->poll_description = $request->input('poll_description');
+        $options = $request->input('options');
+
+        $arr_options = array();
+        foreach ($options as $value) {
+            array_push($arr_options, ['option_description' => $value]);
+        };
 
         if ($poll->save()) {
+            $poll->options()->createMany($arr_options);
             $data = array(
                 'poll_id' => $poll->poll_id
             );
