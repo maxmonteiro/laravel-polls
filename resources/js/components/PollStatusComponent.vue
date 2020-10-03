@@ -1,23 +1,23 @@
 <template>
     <div>
-        <h2>Status</h2>
-        <form @submit.prevent="votePoll" class="mt-4 col-lg-8">
+        <h2>Enquete Status</h2>
+        <form action="" class="mt-4 col-lg-8">
             <div class="form-group">
                 <h5>{{ poll.poll_description }}</h5>
             </div>
             <div class="form-group">
                 <ul class="list-group">
-                    <li class="list-group-item" v-for="option in poll.options" :key="option.option_id">
-                        <label class="form-check-label" for="">
-                            {{ option.option_description }}
+                    <li class="list-group-item" v-for="option in options" :key="option.option_id">
+                        <label for="">
+                            {{ option.description }}
                         </label>
+                        <span class="float-right">{{ option.qty }} {{ option.qty == 1 ? 'voto' : 'votos' }}</span>
                     </li>
                 </ul>
             </div>
-
+            <p>{{ poll.views }} visualizações</p>
             <div class="form-footer mt-4 text-right">
-                <router-link to="/" class="btn btn-default">Cancelar</router-link>
-                <button class="btn btn-primary">Votar</button>
+                <router-link to="/" class="btn btn-primary">Voltar</router-link>
             </div>
         </form>
     </div>
@@ -27,10 +27,11 @@
 export default {
     data() {
         return {
-            poll: {}
+            poll: {},
+            options: []
         }
     },
-    mounted() {
+    created() {
         this.getPoll()
     },
     methods: {
@@ -38,7 +39,17 @@ export default {
             let poll_id = this.$route.params.id
             axios.get('poll/' + poll_id + '/stats')
             .then(({data}) => {
-                this.poll = data
+                this.poll.poll_description = data.poll_description
+                this.poll.views = data.views
+                data.votes.map(value => {
+                    axios.get('option/' + value.option_id)
+                    .then(({data}) => {
+                        value.description = data.option_description
+                        this.options.push(value)
+                    }).catch((err) => {
+                        console.log(err)
+                    });
+                })
             }).catch((err) => {
                 console.log(err)
             });

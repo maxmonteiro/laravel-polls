@@ -2030,10 +2030,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      poll: {}
+      poll: {},
+      options: []
     };
   },
-  mounted: function mounted() {
+  created: function created() {
     this.getPoll();
   },
   methods: {
@@ -2043,7 +2044,18 @@ __webpack_require__.r(__webpack_exports__);
       var poll_id = this.$route.params.id;
       axios.get('poll/' + poll_id + '/stats').then(function (_ref) {
         var data = _ref.data;
-        _this.poll = data;
+        _this.poll.poll_description = data.poll_description;
+        _this.poll.views = data.views;
+        data.votes.map(function (value) {
+          axios.get('option/' + value.option_id).then(function (_ref2) {
+            var data = _ref2.data;
+            value.description = data.option_description;
+
+            _this.options.push(value);
+          })["catch"](function (err) {
+            console.log(err);
+          });
+        });
       })["catch"](function (err) {
         console.log(err);
       });
@@ -38738,67 +38750,59 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("h2", [_vm._v("Status")]),
+    _c("h2", [_vm._v("Enquete Status")]),
     _vm._v(" "),
-    _c(
-      "form",
-      {
-        staticClass: "mt-4 col-lg-8",
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.votePoll($event)
-          }
-        }
-      },
-      [
-        _c("div", { staticClass: "form-group" }, [
-          _c("h5", [_vm._v(_vm._s(_vm.poll.poll_description))])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c(
-            "ul",
-            { staticClass: "list-group" },
-            _vm._l(_vm.poll.options, function(option) {
-              return _c(
-                "li",
-                { key: option.option_id, staticClass: "list-group-item" },
-                [
-                  _c(
-                    "label",
-                    { staticClass: "form-check-label", attrs: { for: "" } },
-                    [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(option.option_description) +
-                          "\n                    "
-                      )
-                    ]
-                  )
-                ]
-              )
-            }),
-            0
-          )
-        ]),
-        _vm._v(" "),
+    _c("form", { staticClass: "mt-4 col-lg-8", attrs: { action: "" } }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c("h5", [_vm._v(_vm._s(_vm.poll.poll_description))])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
         _c(
-          "div",
-          { staticClass: "form-footer mt-4 text-right" },
-          [
-            _c(
-              "router-link",
-              { staticClass: "btn btn-default", attrs: { to: "/" } },
-              [_vm._v("Cancelar")]
-            ),
-            _vm._v(" "),
-            _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Votar")])
-          ],
-          1
+          "ul",
+          { staticClass: "list-group" },
+          _vm._l(_vm.options, function(option) {
+            return _c(
+              "li",
+              { key: option.option_id, staticClass: "list-group-item" },
+              [
+                _c("label", { attrs: { for: "" } }, [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(option.description) +
+                      "\n                    "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "float-right" }, [
+                  _vm._v(
+                    _vm._s(option.qty) +
+                      " " +
+                      _vm._s(option.qty == 1 ? "voto" : "votos")
+                  )
+                ])
+              ]
+            )
+          }),
+          0
         )
-      ]
-    )
+      ]),
+      _vm._v(" "),
+      _c("p", [_vm._v(_vm._s(_vm.poll.views) + " visualizações")]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-footer mt-4 text-right" },
+        [
+          _c(
+            "router-link",
+            { staticClass: "btn btn-primary", attrs: { to: "/" } },
+            [_vm._v("Voltar")]
+          )
+        ],
+        1
+      )
+    ])
   ])
 }
 var staticRenderFns = []

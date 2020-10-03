@@ -112,6 +112,7 @@ class PollController extends Controller
         }
 
         $data = array(
+            'poll_description' => $poll->poll_description,
             'views' => $poll->views,
             'votes' => $arr_votes
         );
