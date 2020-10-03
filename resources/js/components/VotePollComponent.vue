@@ -3,11 +3,22 @@
         <h2>Votar Enquete</h2>
         <form @submit.prevent="votePoll" class="mt-4 col-lg-8">
             <div class="form-group">
-                <h3>Descricao</h3>
+                <h3>{{ poll.poll_description }}</h3>
             </div>
             <div class="form-group">
                 <ul class="list-group">
-
+                    <li class="list-group-item" v-for="option in poll.options" :key="option.option_id">
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="radio"
+                                :value="option.option_id"
+                                v-model="option_id">
+                            <label class="form-check-label" for="">
+                                {{ option.option_description }}
+                            </label>
+                        </div>
+                    </li>
                 </ul>
             </div>
 
@@ -23,7 +34,8 @@
 export default {
     data() {
         return {
-            poll: {}
+            poll: {},
+            option_id: null
         }
     },
     mounted() {
@@ -34,18 +46,34 @@ export default {
             let poll_id = this.$route.params.id
             axios.get('poll/' + poll_id)
             .then(({data}) => {
-                console.log('poll.', data)
+                this.poll = data
             }).catch((err) => {
                 console.log(err)
             });
         },
         votePoll() {
-
+            if (this.option_id != null) {
+                let poll_id = this.poll.poll_id
+                let obj = {
+                    option_id: this.option_id
+                }
+                axios.post('poll/' + poll_id + '/vote', obj)
+                .then(({data}) => {
+                    console.log('votação realizada.', data)
+                    this.$router.push({ path: '/' })
+                }).catch((err) => {
+                    console.log(err)
+                });
+            } else {
+                alert('Por favor, escolha uma opção!')
+            }
         }
     }
 }
 </script>
 
 <style scoped>
-
+form label {
+    font-weight: 300;
+}
 </style>
