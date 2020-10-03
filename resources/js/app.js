@@ -26,7 +26,12 @@ const routes = [
         path: '/poll/vote/:id',
         name: 'vote-poll',
         component: require('./components/VotePollComponent.vue').default
-    }
+    },
+    {
+        path: '/poll/status/:id',
+        name: 'status-poll',
+        component: require('./components/PollStatusComponent.vue').default
+    },
 ]
 
 const router = new VueRouter({

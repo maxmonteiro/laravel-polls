@@ -7,7 +7,7 @@
                      <li class="list-group-item">
                         <span class="text-right">#{{ poll.poll_id }}</span>
                         <p>{{ poll.poll_description }}</p>
-                        <span class="span-link">Ver status</span>
+                        <span class="span-link" @click.stop.prevent="showPollStatus(poll)">Ver status</span>
                     </li>
                 </router-link>
             </ul>
@@ -38,11 +38,11 @@ export default {
         newPoll() {
             this.$router.push({ path: '/poll/add' })
         },
-        openPoll(elem) {
+        showPollStatus(elem) {
             this.$router.push({
-                name: 'vote-poll',
+                name: 'status-poll',
                 params: {
-                    id: elem.id
+                    id: elem.poll_id
                 }
             })
         }
